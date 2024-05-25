@@ -31,7 +31,8 @@ int numVertices = 4;
 
 // Vértices del polígono
                      //h           //i        //f           //g
-Point vertices[] = {{450, 231}, {450, 394}, {630, 394}, {630, 231}};
+Point vertices[] = {{188, 428}, {160, 300}, {620, 300}, {587, 432}};
+Point vertices2[] = {{300, 440}, {457,442}, {468, 300}, {290, 300}};
 
 // Función para dibujar un píxel
 void setPixel(int x, int y) {
@@ -161,15 +162,21 @@ void dibujar_usosmultiples(){
     glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
     drawPolygon(vertices, numVertices);
 
-    glColor3f( 0, 0, 1); // Rojo para el relleno del polígono
+    glColor3f( 0.81, 0.81, 0.81); // Rojo para el relleno del polígono
     scanLineFill(vertices, numVertices);
     
-    glColor3f( 1, 0, 0);
-    EcuacionG(10,530,365,530,235);
-    glColor3f( 1, 0, 0);
-    EcuacionG(10,450,320,574,320);
-    glColor3f( 1, 0, 0);
-    EcuacionG(9,574,267,450,267);
+    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
+    drawPolygon(vertices2, numVertices);
+
+    glColor3f(0.77, 0.34, 0.26); // Azul para el relleno del polígono
+    scanLineFill(vertices2, numVertices);
+    
+//    glColor3f( 0, 1, 0);
+//    EcuacionG(10,463,335,659,344);
+//    glColor3f( 1, 0, 0);
+//    EcuacionG(10,450,320,574,320);
+//    glColor3f( 1, 0, 0);
+//    EcuacionG(9,574,267,450,267);
 /*
     Point vertices[] = {{25, 25}, {150, 25}, {150, 150}, {25, 150}};
     glColor3f(0.0, 0.0, 0.0); // Rojo para el relleno del polígono
