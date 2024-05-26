@@ -32,8 +32,17 @@ int numVertices2 = 6;
 
 // Vértices del polígono
 //LA SUMATORIA DEBE SER 660 PARA QUE SEA SIMETRICO
+Point verticesVentana1[] = {{454, 450}, {590, 450}, {590, 415}, {454, 415}};
+Point verticesVentana2[] = {{454, 388}, {590, 388}, {590, 360}, {454, 360}};
+Point verticesVentana3[] = {{454, 330}, {590, 330}, {590, 300}, {454, 300}};
+
+Point verticesVentanaReflejada1[] = {{206, 450}, {70, 450}, {70, 415}, {206, 415}};
+Point verticesVentanaReflejada2[] = {{206, 388}, {70, 388}, {70, 360}, {206, 360}};
+Point verticesVentanaReflejada3[] = {{206, 330}, {70, 330}, {70, 300}, {206, 300}};
+
 Point verticesPared[] = {{454, 468}, {600, 470}, {600, 280}, {454, 280}};
 Point verticesParedReflejada[] = {{206, 468}, {60, 470}, {60, 280}, {206, 280}};
+
 Point verticesCentro[] = {{330, 440}, {330,480}, {454, 480}, {454, 280}, {380, 280}, {380, 440}};
 Point verticesCentroReflejado[] = {{330, 440}, {330,480}, {206, 480}, {206, 280}, {280, 280}, {280, 440}};
 // Función para dibujar un píxel
@@ -161,41 +170,93 @@ void EcuacionG(int size, float x1, float y1, float x2, float y2) {
 void dibujar_usosmultiples(){
    glClear(GL_COLOR_BUFFER_BIT);
    
-   glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
+    //PAREDES
+    glColor3f(0.0, 0.0, 0.0); // Se dibuja el poligono
     drawPolygon(verticesPared, numVertices);
 
-    glColor3f( 0.81, 0.81, 0.81); // Blanco para el relleno del polígono
+    glColor3f( 0.81, 0.81, 0.81); // Se rellena el poligono
     scanLineFill(verticesPared, numVertices);
     
-    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
+    glColor3f(0.0, 0.0, 0.0); 
     drawPolygon(verticesParedReflejada, numVertices);
 
-    glColor3f( 0.81, 0.81, 0.81); // Blanco para el relleno del polígono
+    glColor3f( 0.81, 0.81, 0.81); 
     scanLineFill(verticesParedReflejada, numVertices);
     
-    glColor3f(0.77, 0.34, 0.26); // Negro para el contorno del polígono
+    //CENTRO
+    glColor3f(0.77, 0.34, 0.26); 
     drawPolygon(verticesCentroReflejado, numVertices2);
 
-    glColor3f(0.77, 0.34, 0.26); // Blanco para el relleno del polígono
+    glColor3f(0.77, 0.34, 0.26); 
     scanLineFill(verticesCentroReflejado, numVertices2);
     
-    glColor3f(0.77, 0.34, 0.26); // Negro para el contorno del polígono
+    glColor3f(0.77, 0.34, 0.26); 
     drawPolygon(verticesCentro, numVertices2);
 
-    glColor3f(0.77, 0.34, 0.26); // Blanco para el relleno del polígono
+    glColor3f(0.77, 0.34, 0.26); 
     scanLineFill(verticesCentro, numVertices2);
     
-//    glColor3f( 0, 1, 0);
-//    EcuacionG(10,463,335,659,344);
-//    glColor3f( 1, 0, 0);
-//    EcuacionG(10,450,320,574,320);
-//    glColor3f( 1, 0, 0);
-//    EcuacionG(9,574,267,450,267);
-/*
-    Point vertices[] = {{25, 25}, {150, 25}, {150, 150}, {25, 150}};
-    glColor3f(0.0, 0.0, 0.0); // Rojo para el relleno del polígono
-    scanLineFill(vertices, numVertices);
-*/
+    //VENTANAL 1
+    glColor3f(0.31, 0.20, 0.16); 
+    drawPolygon(verticesVentana1, numVertices);
+
+    glColor3f(0.31, 0.20, 0.16); 
+    scanLineFill(verticesVentana1, numVertices);
+    
+    //VENTANA 2
+    glColor3f(0.31, 0.20, 0.16); 
+    drawPolygon(verticesVentana2, numVertices);
+
+    glColor3f(0.31, 0.20, 0.16); 
+    scanLineFill(verticesVentana2, numVertices);
+    
+    //VENTANA 3
+    glColor3f(0.31, 0.20, 0.16); 
+    drawPolygon(verticesVentana3, numVertices);
+
+    glColor3f(0.31, 0.20, 0.16); 
+    scanLineFill(verticesVentana3, numVertices);
+    
+    //VENTANA REFLEJADA 1
+    glColor3f(0.31, 0.20, 0.16); 
+    drawPolygon(verticesVentanaReflejada1, numVertices);
+
+    glColor3f(0.31, 0.20, 0.16); 
+    scanLineFill(verticesVentanaReflejada1, numVertices);
+    
+    //VENTANA REFLEJADA 2
+    glColor3f(0.31, 0.20, 0.16); 
+    drawPolygon(verticesVentanaReflejada2, numVertices);
+
+    glColor3f(0.31, 0.20, 0.16); 
+    scanLineFill(verticesVentanaReflejada2, numVertices);
+    
+    //VENTANA REFLEJADA 3
+    glColor3f(0.31, 0.20, 0.16); 
+    drawPolygon(verticesVentanaReflejada3, numVertices);
+
+    glColor3f(0.31, 0.20, 0.16); 
+    scanLineFill(verticesVentanaReflejada3, numVertices);
+    
+    glColor3f(0.77, 0.34, 0.26);    
+    EcuacionG(10, 545, 448, 545, 280);
+    
+    glColor3f(0.77, 0.34, 0.26);
+    EcuacionG(10, 450, 394, 588, 394);
+    
+    glColor3f(0.77, 0.34, 0.26);
+    EcuacionG(10, 450, 336, 588, 336);
+    
+    glColor3f(0.77, 0.34, 0.26);    
+    EcuacionG(10, 115, 448, 115, 280);
+    
+    glColor3f(0.77, 0.34, 0.26);
+    EcuacionG(10, 210, 394, 72, 394);
+    
+    glColor3f(0.77, 0.34, 0.26);
+    EcuacionG(10, 210, 336, 72, 336);
+
+    
     glFlush();
        
 }
