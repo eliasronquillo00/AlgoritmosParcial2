@@ -28,12 +28,13 @@ typedef struct {
 
 // Número de vértices del polígono
 int numVertices = 4;
+int numVertices2 = 6;
 
 // Vértices del polígono
                      //h           //i        //f           //g
-Point vertices[] = {{188, 428}, {160, 300}, {620, 300}, {587, 432}};
-Point vertices2[] = {{300, 440}, {457,442}, {468, 300}, {290, 300}};
-
+//Point verticesPared[] = {{514, 508}, {696, 510}, {697, 291}, {522, 288}};
+Point verticesCentro[] = {{330, 440}, {330,480}, {454, 480}, {454, 280}, {380, 280}, {380, 440}};
+Point verticesReflected[] = {{330, 440}, {330,480}, {206, 480}, {206, 280}, {280, 280}, {280, 440}};
 // Función para dibujar un píxel
 void setPixel(int x, int y) {
     glBegin(GL_POINTS);
@@ -159,17 +160,23 @@ void EcuacionG(int size, float x1, float y1, float x2, float y2) {
 void dibujar_usosmultiples(){
    glClear(GL_COLOR_BUFFER_BIT);
    
-    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
-    drawPolygon(vertices, numVertices);
-
-    glColor3f( 0.81, 0.81, 0.81); // Rojo para el relleno del polígono
-    scanLineFill(vertices, numVertices);
+//    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
+//    drawPolygon(verticesPared, numVertices);
+//
+//    glColor3f( 0.81, 0.81, 0.81); // Blanco para el relleno del polígono
+//    scanLineFill(verticesPared, numVertices);
     
-    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
-    drawPolygon(vertices2, numVertices);
+    glColor3f(0.77, 0.34, 0.26); // Negro para el contorno del polígono
+    drawPolygon(verticesReflected, numVertices2);
 
-    glColor3f(0.77, 0.34, 0.26); // Azul para el relleno del polígono
-    scanLineFill(vertices2, numVertices);
+    glColor3f(0.77, 0.34, 0.26); // Blanco para el relleno del polígono
+    scanLineFill(verticesReflected, numVertices2);
+    
+    glColor3f(0.77, 0.34, 0.26); // Negro para el contorno del polígono
+    drawPolygon(verticesCentro, numVertices2);
+
+    glColor3f(0.77, 0.34, 0.26); // Blanco para el relleno del polígono
+    scanLineFill(verticesCentro, numVertices2);
     
 //    glColor3f( 0, 1, 0);
 //    EcuacionG(10,463,335,659,344);
