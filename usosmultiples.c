@@ -31,10 +31,11 @@ int numVertices = 4;
 int numVertices2 = 6;
 
 // Vértices del polígono
-                     //h           //i        //f           //g
-//Point verticesPared[] = {{514, 508}, {696, 510}, {697, 291}, {522, 288}};
+//LA SUMATORIA DEBE SER 660 PARA QUE SEA SIMETRICO
+Point verticesPared[] = {{454, 468}, {600, 470}, {600, 280}, {454, 280}};
+Point verticesParedReflejada[] = {{206, 468}, {60, 470}, {60, 280}, {206, 280}};
 Point verticesCentro[] = {{330, 440}, {330,480}, {454, 480}, {454, 280}, {380, 280}, {380, 440}};
-Point verticesReflected[] = {{330, 440}, {330,480}, {206, 480}, {206, 280}, {280, 280}, {280, 440}};
+Point verticesCentroReflejado[] = {{330, 440}, {330,480}, {206, 480}, {206, 280}, {280, 280}, {280, 440}};
 // Función para dibujar un píxel
 void setPixel(int x, int y) {
     glBegin(GL_POINTS);
@@ -160,17 +161,23 @@ void EcuacionG(int size, float x1, float y1, float x2, float y2) {
 void dibujar_usosmultiples(){
    glClear(GL_COLOR_BUFFER_BIT);
    
-//    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
-//    drawPolygon(verticesPared, numVertices);
-//
-//    glColor3f( 0.81, 0.81, 0.81); // Blanco para el relleno del polígono
-//    scanLineFill(verticesPared, numVertices);
+   glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
+    drawPolygon(verticesPared, numVertices);
+
+    glColor3f( 0.81, 0.81, 0.81); // Blanco para el relleno del polígono
+    scanLineFill(verticesPared, numVertices);
+    
+    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
+    drawPolygon(verticesParedReflejada, numVertices);
+
+    glColor3f( 0.81, 0.81, 0.81); // Blanco para el relleno del polígono
+    scanLineFill(verticesParedReflejada, numVertices);
     
     glColor3f(0.77, 0.34, 0.26); // Negro para el contorno del polígono
-    drawPolygon(verticesReflected, numVertices2);
+    drawPolygon(verticesCentroReflejado, numVertices2);
 
     glColor3f(0.77, 0.34, 0.26); // Blanco para el relleno del polígono
-    scanLineFill(verticesReflected, numVertices2);
+    scanLineFill(verticesCentroReflejado, numVertices2);
     
     glColor3f(0.77, 0.34, 0.26); // Negro para el contorno del polígono
     drawPolygon(verticesCentro, numVertices2);
