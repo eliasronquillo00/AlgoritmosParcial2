@@ -45,6 +45,7 @@ Point verticesParedReflejada[] = {{206, 468}, {60, 470}, {60, 280}, {206, 280}};
 
 Point verticesCentro[] = {{330, 440}, {330,480}, {454, 480}, {454, 280}, {380, 280}, {380, 440}};
 Point verticesCentroReflejado[] = {{330, 440}, {330,480}, {206, 480}, {206, 280}, {280, 280}, {280, 440}};
+
 // Función para dibujar un píxel
 void setPixel(int x, int y) {
     glBegin(GL_POINTS);
@@ -111,18 +112,6 @@ void scanLineFill(Point *vertices, int numVertices) {
         }
     }
 }
-
-// Función de visualización
-/*
-void display() {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glColor3f(0.0, 0.0, 0.0); // Negro para el contorno del polígono
-    drawPolygon(vertices, numVertices);
-
-    glColor3f(1.0, 0.0, 0.0); // Rojo para el relleno del polígono
-    scanLineFill(vertices, numVertices);
-}
-*/
 
 // Función de inicialización
 void init() {
@@ -238,24 +227,241 @@ void dibujar_usosmultiples(){
     glColor3f(0.31, 0.20, 0.16); 
     scanLineFill(verticesVentanaReflejada3, numVertices);
     
+//  PILAR 
     glColor3f(0.77, 0.34, 0.26);    
     EcuacionG(10, 545, 448, 545, 280);
     
+//  ESTRUCTURA HORIZONTAL DE LA VENTANA
     glColor3f(0.77, 0.34, 0.26);
     EcuacionG(10, 450, 394, 588, 394);
     
     glColor3f(0.77, 0.34, 0.26);
     EcuacionG(10, 450, 336, 588, 336);
     
+//  PILAR REFLEJADO
     glColor3f(0.77, 0.34, 0.26);    
     EcuacionG(10, 115, 448, 115, 280);
     
+//  ESTRUCTURA HORIZONTAL DE LA VENTANA REFLEJADA  
     glColor3f(0.77, 0.34, 0.26);
     EcuacionG(10, 210, 394, 72, 394);
     
     glColor3f(0.77, 0.34, 0.26);
     EcuacionG(10, 210, 336, 72, 336);
-
+    
+//  BARROTES DE LAS VENTANAS 1
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 464, 446, 464, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 479, 446, 479, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 493, 446, 493, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 507, 446, 507, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 521, 446, 521, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 536, 446, 536, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 559, 446, 559, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 573, 446, 573, 420);
+    
+//  BARROTES DE LAS VENTANAS 2
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 464, 386, 464, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 479, 386, 479, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 493, 386, 493, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 507, 386, 507, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 521, 386, 521, 362);
+    
+     glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 536, 386, 536, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 559, 386, 559, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 573, 386, 573, 362);
+    
+//  BARROTES DE LAS VENTANAS 3
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 464, 328, 464, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 479, 328, 479, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 493, 328, 493, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 507, 328, 507, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 521, 328, 521, 304);
+    
+     glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 536, 328, 536, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 559, 328, 559, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 573, 328, 573, 304);
+    
+//  BARROTES DE LAS VENTANAS REFLEJADAS 1
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 196, 446, 196, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 181, 446, 181, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 167, 446, 167, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 153, 446, 153, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 139, 446, 139, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 124, 446, 124, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 101, 446, 101, 420);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 87, 446, 87, 420);
+    
+//  BARROTES DE LAS VENTANAS REFLEJADAS 2
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 196, 386, 196, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 181, 386, 181, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 167, 386, 167, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 153, 386, 153, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 139, 386, 139, 362);
+    
+     glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 124, 386, 124, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 101, 386, 101, 362);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 87, 386, 87, 362);
+    
+//  BARROTES DE LAS VENTANAS REFLEJADAS 3
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 196, 328, 196, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 181, 328, 181, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 167, 328, 167, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 153, 328, 153, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 139, 328, 139, 304);
+    
+     glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 124, 328, 124, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 101, 328, 101, 304);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(5, 87, 328, 87, 304);
+    
+//  VENTANALES DE LA PARED ROJA
+//  PRIMERA FILA  
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 397, 435, 397, 400);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 418, 435, 418, 400);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 439, 435, 439, 400);
+    
+//  SEGUNDA FILA  
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 397, 350, 397, 385);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 418, 350, 418, 385);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 439, 350, 439, 385);
+    
+//  TERCERA FILA  
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 397, 300, 397, 335);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 418, 300, 418, 335);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 439, 300, 439, 335);
+    
+//  VENTANALES DE LA PARED ROJA REFLEJADA
+//  PRIMERA FILA  
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 263, 435, 263, 400);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 242, 435, 242, 400);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 221, 435, 221, 400);
+    
+//  SEGUNDA FILA  
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 263, 350, 263, 385);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 242, 350, 242, 385);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 221, 350, 221, 385);
+    
+//  TERCERA FILA  
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 263, 300, 263, 335);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 242, 300, 242, 335);
+    
+    glColor3f(0.31, 0.20, 0.16);
+    EcuacionG(12, 221, 300, 221, 335);
+    
+    
     
     glFlush();
        
