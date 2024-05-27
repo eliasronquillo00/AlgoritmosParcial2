@@ -13,25 +13,21 @@
 #define PI 3.14156
 
 void inicializar_usosmultiples(void) {
-    glClearColor(0.0, 0.44, 0.73, 1.0); // gray color
+    glClearColor(0.0, 0.44, 0.73, 1.0); 
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0, 700, 0, 700); // 700x700
 }
 
-// Tamaño de la ventana
 #define WIDTH 640
 #define HEIGHT 480
 
-// Estructura para almacenar puntos
 typedef struct {
     int x, y;
 } Point;
 
-// Número de vértices del polígono
-int numVertices = 4;
-int numVertices2 = 6;
+int numeroVertices = 4;
+int numeroVertices2 = 6;
 
-// Vértices del polígono
 //LA SUMATORIA DEBE SER 660 PARA QUE SEA SIMETRICO
 Point verticesVentana1[] = {{454, 450}, {590, 450}, {590, 415}, {454, 415}};
 Point verticesVentana2[] = {{454, 388}, {590, 388}, {590, 360}, {454, 360}};
@@ -49,7 +45,6 @@ Point verticesCentroReflejado[] = {{330, 440}, {330,480}, {206, 480}, {206, 280}
 
 Point verticesEntrada[] = {{280, 440}, {380, 440}, {380, 280}, {280, 280}};
 
-// Función para dibujar un píxel
 void setPixel(int x, int y) {
     glBegin(GL_POINTS);
     glVertex2i(x, y);
@@ -57,8 +52,7 @@ void setPixel(int x, int y) {
     glFlush();
 }
 
-// Función para dibujar el polígono
-void drawPolygon(Point *vertices, int numVertices) {
+void DibujarPoligono(Point *vertices, int numVertices) {
     glBegin(GL_LINE_LOOP);
     for (int i = 0; i < numVertices; i++) {
         glVertex2i(vertices[i].x, vertices[i].y);
@@ -67,28 +61,24 @@ void drawPolygon(Point *vertices, int numVertices) {
     glFlush();
 }
 
-// Función para rellenar el polígono utilizando Scan-Line Fill
-void scanLineFill(Point *vertices, int numVertices) {
+void LlenadoInundacion(Point *vertices, int numeroVertices) {
     int i, j, k;
     int x, y, temp;
-    int minY = vertices[0].y, maxY = vertices[0].y;
+    int minimoY = vertices[0].y, maximoY = vertices[0].y;
 
-    // Encontrar las coordenadas y mínima y máxima
-    for (i = 1; i < numVertices; i++) {
-        if (vertices[i].y < minY)
-            minY = vertices[i].y;
-        if (vertices[i].y > maxY)
-            maxY = vertices[i].y;
+    for (i = 1; i < numeroVertices; i++) {
+        if (vertices[i].y < minimoY)
+            minimoY = vertices[i].y;
+        if (vertices[i].y > maximoY)
+            maximoY = vertices[i].y;
     }
 
-    // Scan-Line Fill
-    for (y = minY; y <= maxY; y++) {
-        int intersections[numVertices];
+    for (y = minimoY; y <= maximoY; y++) {
+        int intersections[numeroVertices];
         int numIntersections = 0;
 
-        // Encontrar las intersecciones con las aristas del polígono
-        for (i = 0; i < numVertices; i++) {
-            int next = (i + 1) % numVertices;
+        for (i = 0; i < numeroVertices; i++) {
+            int next = (i + 1) % numeroVertices;
             if ((vertices[i].y <= y && vertices[next].y > y) ||
                 (vertices[i].y > y && vertices[next].y <= y)) {
                 int intersectX = vertices[i].x + (y - vertices[i].y) * (vertices[next].x - vertices[i].x) / (vertices[next].y - vertices[i].y);
@@ -96,7 +86,6 @@ void scanLineFill(Point *vertices, int numVertices) {
             }
         }
 
-        // Ordenar las intersecciones
         for (j = 0; j < numIntersections - 1; j++) {
             for (k = j + 1; k < numIntersections; k++) {
                 if (intersections[j] > intersections[k]) {
@@ -107,7 +96,6 @@ void scanLineFill(Point *vertices, int numVertices) {
             }
         }
 
-        // Dibujar píxeles entre pares de intersecciones
         for (i = 0; i < numIntersections; i += 2) {
             for (x = intersections[i]; x <= intersections[i + 1]; x++) {
                 setPixel(x, y);
@@ -116,82 +104,76 @@ void scanLineFill(Point *vertices, int numVertices) {
     }
 }
 
-void Elipse(float radioX, float radioY, float centerX, float centerY, float LimiteAng) {
+void Elipse(float radioX, float radioY, float centroX, float centroY, float limiteAngulo) {
     if (radioX > 0 && radioY > 0) {
-        if (LimiteAng > 360) {
-//            printf("Error: El límite del ángulo debe estar en el rango [0, 360]. Saliendo del programa.\n");
+        if (limiteAngulo > 360) {
             exit(EXIT_FAILURE);
         }
 
         glBegin(GL_TRIANGLE_FAN);
-        glColor3f(0.0, .50, 0.0); // color verde para rellenar la elipse
-        glVertex2f(centerX, centerY); // centro de la elipse
+        glColor3f(0.0, .50, 0.0); 
+        glVertex2f(centroX, centroY);
 
-        for (float angle = 0; angle <= LimiteAng; angle++) {
-            float radian = angle * (PI / 180); // para pasar a radianes
+        for (float angle = 0; angle <= limiteAngulo; angle++) {
+            float radian = angle * (PI / 180); 
             
-            float x = centerX + radioX * cos(radian); // coordenada x
-            float y = centerY + radioY * sin(radian); // coordenada y
+            float x = centroX + radioX * cos(radian); 
+            float y = centroY + radioY * sin(radian); 
 
             glVertex2f(x, y);
         }
         
-        glVertex2f(centerX + radioX * cos(0), centerY + radioY * sin(0)); // cierra la elipse
+        glVertex2f(centroX + radioX * cos(0), centroY + radioY * sin(0)); 
         glEnd();
     } else {
-//        printf("Los radios deben ser mayores a 0.\n");
         exit(EXIT_FAILURE);
     }
 }
 
-void Circulo(float radio, float centerX, float centerY, float LimiteAng) {
+void Circulo(float radio, float centroX, float centroY, float limiteAngulo) {
     glBegin(GL_LINES);
     glColor3f(1.0, 1.0, 0.0);
     
     if (radio > 0) {
-        if (LimiteAng  > 360) {
-//            printf("Error: El límite del ángulo debe estar en el rango [0, 360]. Saliendo del programa.\n");
+        if (limiteAngulo  > 360) {
             exit(EXIT_FAILURE);
         }
 
-        for (float angle = 0; angle <= LimiteAng ; angle++) {
-            float radian = angle * (PI / 180);//para pasar a radianes radianes = θ*(π/180)
+        for (float angulo = 0; angulo <= limiteAngulo ; angulo++) {
+            float radian = angulo * (PI / 180);
             
-            float x = radio * cos(radian);// Formula x= rcos(radian)
-            float y = radio * sin(radian);//  Formula x= rcos(radian)
+            float x = radio * cos(radian);
+            float y = radio * sin(radian);
             
             
             
-            // Invertir los puntos para rellenar los demás
-            glVertex2f(centerX + x, centerY + y);// 0, 45
-            glVertex2f(centerX + x, centerY - y);
-            glVertex2f(centerX - x, centerY + y);
-            glVertex2f(centerX - x, centerY - y);
-            glVertex2f(centerX + y, centerY + x);
-            glVertex2f(centerX + y, centerY - x);
-            glVertex2f(centerX - y, centerY + x);
-            glVertex2f(centerX - y, centerY - x);
+            glVertex2f(centroX + x, centroY + y);
+            glVertex2f(centroX + x, centroY - y);
+            glVertex2f(centroX - x, centroY + y);
+            glVertex2f(centroX - x, centroY - y);
+            glVertex2f(centroX + y, centroY + x);
+            glVertex2f(centroX + y, centroY - x);
+            glVertex2f(centroX - y, centroY + x);
+            glVertex2f(centroX - y, centroY - x);
 
         }
     }else{
-//        printf("El rango debe ser mayor a 0.\n");
         exit(EXIT_FAILURE);
     }
     
     glEnd();
 }
 
-// Función de inicialización
 void init() {
-    glClearColor(1.0, 1.0, 1.0, 1.0); // Fondo blanco
-    glColor3f(0.0, 0.0, 0.0); // Color inicial de los puntos (negro)
-    glPointSize(3.0); // Tamaño de los puntos
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glColor3f(0.0, 0.0, 0.0); 
+    glPointSize(3.0); 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.0, WIDTH, 0.0, HEIGHT);
 }
 
-void EcuacionG(int size, float x1, float y1, float x2, float y2) {
+void PuntoPDT(int size, float x1, float y1, float x2, float y2) {
 
     if (x1 == x2) {
         int startY = (y1 < y2) ? y1 : y2;
@@ -229,397 +211,397 @@ void dibujar_usosmultiples(){
    
     //PAREDES
     glColor3f(0.0, 0.0, 0.0); // Se dibuja el poligono
-    drawPolygon(verticesPared, numVertices);
+    DibujarPoligono(verticesPared, numeroVertices);
 
     glColor3f( 0.81, 0.81, 0.81); // Se rellena el poligono
-    scanLineFill(verticesPared, numVertices);
+    LlenadoInundacion(verticesPared, numeroVertices);
     
     glColor3f(0.0, 0.0, 0.0); 
-    drawPolygon(verticesParedReflejada, numVertices);
+    DibujarPoligono(verticesParedReflejada, numeroVertices);
 
     glColor3f( 0.81, 0.81, 0.81); 
-    scanLineFill(verticesParedReflejada, numVertices);
+    LlenadoInundacion(verticesParedReflejada, numeroVertices);
     
     //CENTRO
     glColor3f(0.77, 0.34, 0.26); 
-    drawPolygon(verticesCentroReflejado, numVertices2);
+    DibujarPoligono(verticesCentroReflejado, numeroVertices2);
 
     glColor3f(0.77, 0.34, 0.26); 
-    scanLineFill(verticesCentroReflejado, numVertices2);
+    LlenadoInundacion(verticesCentroReflejado, numeroVertices2);
     
     glColor3f(0.77, 0.34, 0.26); 
-    drawPolygon(verticesCentro, numVertices2);
+    DibujarPoligono(verticesCentro, numeroVertices2);
 
     glColor3f(0.77, 0.34, 0.26); 
-    scanLineFill(verticesCentro, numVertices2);
+    LlenadoInundacion(verticesCentro, numeroVertices2);
     
     glColor3f(0.77, 0.34, 0.26); 
-    drawPolygon(verticesEntrada, numVertices);
+    DibujarPoligono(verticesEntrada, numeroVertices);
 
     glColor3f(0.74, 0.65, 0.52); 
-    scanLineFill(verticesEntrada, numVertices);
+    LlenadoInundacion(verticesEntrada, numeroVertices);
     
     //VENTANAL 1
     glColor3f(0.31, 0.20, 0.16); 
-    drawPolygon(verticesVentana1, numVertices);
+    DibujarPoligono(verticesVentana1, numeroVertices);
 
     glColor3f(0.31, 0.20, 0.16); 
-    scanLineFill(verticesVentana1, numVertices);
+    LlenadoInundacion(verticesVentana1, numeroVertices);
     
     //VENTANA 2
     glColor3f(0.31, 0.20, 0.16); 
-    drawPolygon(verticesVentana2, numVertices);
+    DibujarPoligono(verticesVentana2, numeroVertices);
 
     glColor3f(0.31, 0.20, 0.16); 
-    scanLineFill(verticesVentana2, numVertices);
+    LlenadoInundacion(verticesVentana2, numeroVertices);
     
     //VENTANA 3
     glColor3f(0.31, 0.20, 0.16); 
-    drawPolygon(verticesVentana3, numVertices);
+    DibujarPoligono(verticesVentana3, numeroVertices);
 
     glColor3f(0.31, 0.20, 0.16); 
-    scanLineFill(verticesVentana3, numVertices);
+    LlenadoInundacion(verticesVentana3, numeroVertices);
     
     //VENTANA REFLEJADA 1
     glColor3f(0.31, 0.20, 0.16); 
-    drawPolygon(verticesVentanaReflejada1, numVertices);
+    DibujarPoligono(verticesVentanaReflejada1, numeroVertices);
 
     glColor3f(0.31, 0.20, 0.16); 
-    scanLineFill(verticesVentanaReflejada1, numVertices);
+    LlenadoInundacion(verticesVentanaReflejada1, numeroVertices);
     
     //VENTANA REFLEJADA 2
     glColor3f(0.31, 0.20, 0.16); 
-    drawPolygon(verticesVentanaReflejada2, numVertices);
+    DibujarPoligono(verticesVentanaReflejada2, numeroVertices);
 
     glColor3f(0.31, 0.20, 0.16); 
-    scanLineFill(verticesVentanaReflejada2, numVertices);
+    LlenadoInundacion(verticesVentanaReflejada2, numeroVertices);
     
     //VENTANA REFLEJADA 3
     glColor3f(0.31, 0.20, 0.16); 
-    drawPolygon(verticesVentanaReflejada3, numVertices);
+    DibujarPoligono(verticesVentanaReflejada3, numeroVertices);
 
     glColor3f(0.31, 0.20, 0.16); 
-    scanLineFill(verticesVentanaReflejada3, numVertices);
+    LlenadoInundacion(verticesVentanaReflejada3, numeroVertices);
     
 //  PILAR 
     glColor3f(0.77, 0.34, 0.26);    
-    EcuacionG(10, 545, 448, 545, 280);
+    PuntoPDT(10, 545, 448, 545, 280);
     
 //  ESTRUCTURA HORIZONTAL DE LA VENTANA
     glColor3f(0.77, 0.34, 0.26);
-    EcuacionG(10, 450, 394, 588, 394);
+    PuntoPDT(10, 450, 394, 588, 394);
     
     glColor3f(0.77, 0.34, 0.26);
-    EcuacionG(10, 450, 336, 588, 336);
+    PuntoPDT(10, 450, 336, 588, 336);
     
 //  PILAR REFLEJADO
     glColor3f(0.77, 0.34, 0.26);    
-    EcuacionG(10, 115, 448, 115, 280);
+    PuntoPDT(10, 115, 448, 115, 280);
     
 //  ESTRUCTURA HORIZONTAL DE LA VENTANA REFLEJADA  
     glColor3f(0.77, 0.34, 0.26);
-    EcuacionG(10, 210, 394, 72, 394);
+    PuntoPDT(10, 210, 394, 72, 394);
     
     glColor3f(0.77, 0.34, 0.26);
-    EcuacionG(10, 210, 336, 72, 336);
+    PuntoPDT(10, 210, 336, 72, 336);
     
 //  BARROTES DE LAS VENTANAS 1
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 464, 446, 464, 420);
+    PuntoPDT(5, 464, 446, 464, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 479, 446, 479, 420);
+    PuntoPDT(5, 479, 446, 479, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 493, 446, 493, 420);
+    PuntoPDT(5, 493, 446, 493, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 507, 446, 507, 420);
+    PuntoPDT(5, 507, 446, 507, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 521, 446, 521, 420);
+    PuntoPDT(5, 521, 446, 521, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 536, 446, 536, 420);
+    PuntoPDT(5, 536, 446, 536, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 559, 446, 559, 420);
+    PuntoPDT(5, 559, 446, 559, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 573, 446, 573, 420);
+    PuntoPDT(5, 573, 446, 573, 420);
     
 //  BARROTES DE LAS VENTANAS 2
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 464, 386, 464, 362);
+    PuntoPDT(5, 464, 386, 464, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 479, 386, 479, 362);
+    PuntoPDT(5, 479, 386, 479, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 493, 386, 493, 362);
+    PuntoPDT(5, 493, 386, 493, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 507, 386, 507, 362);
+    PuntoPDT(5, 507, 386, 507, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 521, 386, 521, 362);
+    PuntoPDT(5, 521, 386, 521, 362);
     
      glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 536, 386, 536, 362);
+    PuntoPDT(5, 536, 386, 536, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 559, 386, 559, 362);
+    PuntoPDT(5, 559, 386, 559, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 573, 386, 573, 362);
+    PuntoPDT(5, 573, 386, 573, 362);
     
 //  BARROTES DE LAS VENTANAS 3
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 464, 328, 464, 304);
+    PuntoPDT(5, 464, 328, 464, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 479, 328, 479, 304);
+    PuntoPDT(5, 479, 328, 479, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 493, 328, 493, 304);
+    PuntoPDT(5, 493, 328, 493, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 507, 328, 507, 304);
+    PuntoPDT(5, 507, 328, 507, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 521, 328, 521, 304);
+    PuntoPDT(5, 521, 328, 521, 304);
     
      glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 536, 328, 536, 304);
+    PuntoPDT(5, 536, 328, 536, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 559, 328, 559, 304);
+    PuntoPDT(5, 559, 328, 559, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 573, 328, 573, 304);
+    PuntoPDT(5, 573, 328, 573, 304);
     
 //  BARROTES DE LAS VENTANAS REFLEJADAS 1
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 196, 446, 196, 420);
+    PuntoPDT(5, 196, 446, 196, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 181, 446, 181, 420);
+    PuntoPDT(5, 181, 446, 181, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 167, 446, 167, 420);
+    PuntoPDT(5, 167, 446, 167, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 153, 446, 153, 420);
+    PuntoPDT(5, 153, 446, 153, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 139, 446, 139, 420);
+    PuntoPDT(5, 139, 446, 139, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 124, 446, 124, 420);
+    PuntoPDT(5, 124, 446, 124, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 101, 446, 101, 420);
+    PuntoPDT(5, 101, 446, 101, 420);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 87, 446, 87, 420);
+    PuntoPDT(5, 87, 446, 87, 420);
     
 //  BARROTES DE LAS VENTANAS REFLEJADAS 2
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 196, 386, 196, 362);
+    PuntoPDT(5, 196, 386, 196, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 181, 386, 181, 362);
+    PuntoPDT(5, 181, 386, 181, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 167, 386, 167, 362);
+    PuntoPDT(5, 167, 386, 167, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 153, 386, 153, 362);
+    PuntoPDT(5, 153, 386, 153, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 139, 386, 139, 362);
+    PuntoPDT(5, 139, 386, 139, 362);
     
      glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 124, 386, 124, 362);
+    PuntoPDT(5, 124, 386, 124, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 101, 386, 101, 362);
+    PuntoPDT(5, 101, 386, 101, 362);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 87, 386, 87, 362);
+    PuntoPDT(5, 87, 386, 87, 362);
     
 //  BARROTES DE LAS VENTANAS REFLEJADAS 3
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 196, 328, 196, 304);
+    PuntoPDT(5, 196, 328, 196, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 181, 328, 181, 304);
+    PuntoPDT(5, 181, 328, 181, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 167, 328, 167, 304);
+    PuntoPDT(5, 167, 328, 167, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 153, 328, 153, 304);
+    PuntoPDT(5, 153, 328, 153, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 139, 328, 139, 304);
+    PuntoPDT(5, 139, 328, 139, 304);
     
      glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 124, 328, 124, 304);
+    PuntoPDT(5, 124, 328, 124, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 101, 328, 101, 304);
+    PuntoPDT(5, 101, 328, 101, 304);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(5, 87, 328, 87, 304);
+    PuntoPDT(5, 87, 328, 87, 304);
     
 //  VENTANALES DE LA PARED ROJA
 //  PRIMERA FILA  
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 397, 435, 397, 400);
+    PuntoPDT(12, 397, 435, 397, 400);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 418, 435, 418, 400);
+    PuntoPDT(12, 418, 435, 418, 400);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 439, 435, 439, 400);
+    PuntoPDT(12, 439, 435, 439, 400);
     
 //  SEGUNDA FILA  
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 397, 350, 397, 385);
+    PuntoPDT(12, 397, 350, 397, 385);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 418, 350, 418, 385);
+    PuntoPDT(12, 418, 350, 418, 385);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 439, 350, 439, 385);
+    PuntoPDT(12, 439, 350, 439, 385);
     
 //  TERCERA FILA  
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 397, 300, 397, 335);
+    PuntoPDT(12, 397, 300, 397, 335);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 418, 300, 418, 335);
+    PuntoPDT(12, 418, 300, 418, 335);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 439, 300, 439, 335);
+    PuntoPDT(12, 439, 300, 439, 335);
     
 //  VENTANALES DE LA PARED ROJA REFLEJADA
 //  PRIMERA FILA  
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 263, 435, 263, 400);
+    PuntoPDT(12, 263, 435, 263, 400);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 242, 435, 242, 400);
+    PuntoPDT(12, 242, 435, 242, 400);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 221, 435, 221, 400);
+    PuntoPDT(12, 221, 435, 221, 400);
     
 //  SEGUNDA FILA  
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 263, 350, 263, 385);
+    PuntoPDT(12, 263, 350, 263, 385);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 242, 350, 242, 385);
+    PuntoPDT(12, 242, 350, 242, 385);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 221, 350, 221, 385);
+    PuntoPDT(12, 221, 350, 221, 385);
     
 //  TERCERA FILA  
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 263, 300, 263, 335);
+    PuntoPDT(12, 263, 300, 263, 335);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 242, 300, 242, 335);
+    PuntoPDT(12, 242, 300, 242, 335);
     
     glColor3f(0.31, 0.20, 0.16);
-    EcuacionG(12, 221, 300, 221, 335);
+    PuntoPDT(12, 221, 300, 221, 335);
     
 //  VENTANAS CENTRO 1
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 285, 435, 375, 435);
+    PuntoPDT(3, 285, 435, 375, 435);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 375, 435, 375, 390);
+    PuntoPDT(3, 375, 435, 375, 390);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 375, 390, 285, 390);
+    PuntoPDT(3, 375, 390, 285, 390);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 285, 390, 285, 435);
+    PuntoPDT(3, 285, 390, 285, 435);
     
 //  BARROTES  
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 300, 435, 300, 390);
+    PuntoPDT(3, 300, 435, 300, 390);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 320, 435, 320, 390);
+    PuntoPDT(3, 320, 435, 320, 390);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 340, 435, 340, 390);
+    PuntoPDT(3, 340, 435, 340, 390);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 360, 435, 360, 390);
+    PuntoPDT(3, 360, 435, 360, 390);
     
 //  VENTANAS CENTRO 2
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 285, 385, 375, 385);
+    PuntoPDT(3, 285, 385, 375, 385);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 375, 385, 375, 330);
+    PuntoPDT(3, 375, 385, 375, 330);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 375, 330, 285, 330);
+    PuntoPDT(3, 375, 330, 285, 330);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 285, 330, 285, 385);
+    PuntoPDT(3, 285, 330, 285, 385);
     
 //  BARROTES  
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 300, 385, 300, 330);
+    PuntoPDT(3, 300, 385, 300, 330);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 320, 385, 320, 330);
+    PuntoPDT(3, 320, 385, 320, 330);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 340, 385, 340, 330);
+    PuntoPDT(3, 340, 385, 340, 330);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 360, 385, 360, 330);
+    PuntoPDT(3, 360, 385, 360, 330);
     
 //  MARCO
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 285, 325, 375, 325);
+    PuntoPDT(3, 285, 325, 375, 325);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 375, 325, 375, 280);
+    PuntoPDT(3, 375, 325, 375, 280);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 375, 280, 285, 280);
+    PuntoPDT(3, 375, 280, 285, 280);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 285, 280, 285, 325);
+    PuntoPDT(3, 285, 280, 285, 325);
     
 //  PUERTA  
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 320, 310, 340, 310);
+    PuntoPDT(3, 320, 310, 340, 310);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 340, 310, 340, 280);
+    PuntoPDT(3, 340, 310, 340, 280);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 340, 280, 320, 280);
+    PuntoPDT(3, 340, 280, 320, 280);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 320, 280, 320, 310);
+    PuntoPDT(3, 320, 280, 320, 310);
     
     glColor3f(0.0, 0.0, 0.0);
-    EcuacionG(3, 330, 310, 330, 280);
+    PuntoPDT(3, 330, 310, 330, 280);
     
     Elipse(150, 50, 300, 230, 360);
    
-   Circulo(10, 552, 366, 360);
-   Circulo(10, 108, 366, 360);
+    Circulo(10, 552, 366, 360);
+    Circulo(10, 108, 366, 360);
     
     
     glFlush();
