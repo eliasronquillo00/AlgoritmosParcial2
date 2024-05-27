@@ -13,7 +13,7 @@
 #define PI 3.14156
 
 void inicializar_usosmultiples(void) {
-    glClearColor(0.63, 0.65, 0.61, 1.0); // gray color
+    glClearColor(0.0, 0.44, 0.73, 1.0); // gray color
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0, 700, 0, 700); // 700x700
 }
@@ -144,6 +144,43 @@ void Elipse(float radioX, float radioY, float centerX, float centerY, float Limi
     }
 }
 
+void Circulo(float radio, float centerX, float centerY, float LimiteAng) {
+    glBegin(GL_LINES);
+    glColor3f(1.0, 1.0, 0.0);
+    
+    if (radio > 0) {
+        if (LimiteAng  > 360) {
+//            printf("Error: El límite del ángulo debe estar en el rango [0, 360]. Saliendo del programa.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        for (float angle = 0; angle <= LimiteAng ; angle++) {
+            float radian = angle * (PI / 180);//para pasar a radianes radianes = θ*(π/180)
+            
+            float x = radio * cos(radian);// Formula x= rcos(radian)
+            float y = radio * sin(radian);//  Formula x= rcos(radian)
+            
+            
+            
+            // Invertir los puntos para rellenar los demás
+            glVertex2f(centerX + x, centerY + y);// 0, 45
+            glVertex2f(centerX + x, centerY - y);
+            glVertex2f(centerX - x, centerY + y);
+            glVertex2f(centerX - x, centerY - y);
+            glVertex2f(centerX + y, centerY + x);
+            glVertex2f(centerX + y, centerY - x);
+            glVertex2f(centerX - y, centerY + x);
+            glVertex2f(centerX - y, centerY - x);
+
+        }
+    }else{
+//        printf("El rango debe ser mayor a 0.\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    glEnd();
+}
+
 // Función de inicialización
 void init() {
     glClearColor(1.0, 1.0, 1.0, 1.0); // Fondo blanco
@@ -189,9 +226,6 @@ void EcuacionG(int size, float x1, float y1, float x2, float y2) {
 
 void dibujar_usosmultiples(){
    glClear(GL_COLOR_BUFFER_BIT);
-   
-   
-   Elipse(150, 50, 300, 230, 360);
    
     //PAREDES
     glColor3f(0.0, 0.0, 0.0); // Se dibuja el poligono
@@ -582,6 +616,10 @@ void dibujar_usosmultiples(){
     glColor3f(0.0, 0.0, 0.0);
     EcuacionG(3, 330, 310, 330, 280);
     
+    Elipse(150, 50, 300, 230, 360);
+   
+   Circulo(10, 552, 366, 360);
+   Circulo(10, 108, 366, 360);
     
     
     glFlush();
