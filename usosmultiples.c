@@ -10,6 +10,7 @@
 #include <GL/freeglut.h>
 #include <math.h>
 #include <stdlib.h>
+#define PI 3.14156
 
 void inicializar_usosmultiples(void) {
     glClearColor(0.63, 0.65, 0.61, 1.0); // gray color
@@ -45,6 +46,8 @@ Point verticesParedReflejada[] = {{206, 468}, {60, 470}, {60, 280}, {206, 280}};
 
 Point verticesCentro[] = {{330, 440}, {330,480}, {454, 480}, {454, 280}, {380, 280}, {380, 440}};
 Point verticesCentroReflejado[] = {{330, 440}, {330,480}, {206, 480}, {206, 280}, {280, 280}, {280, 440}};
+
+Point verticesEntrada[] = {{280, 440}, {380, 440}, {380, 280}, {280, 280}};
 
 // Función para dibujar un píxel
 void setPixel(int x, int y) {
@@ -113,6 +116,34 @@ void scanLineFill(Point *vertices, int numVertices) {
     }
 }
 
+void Elipse(float radioX, float radioY, float centerX, float centerY, float LimiteAng) {
+    if (radioX > 0 && radioY > 0) {
+        if (LimiteAng > 360) {
+//            printf("Error: El límite del ángulo debe estar en el rango [0, 360]. Saliendo del programa.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        glBegin(GL_TRIANGLE_FAN);
+        glColor3f(0.0, .50, 0.0); // color verde para rellenar la elipse
+        glVertex2f(centerX, centerY); // centro de la elipse
+
+        for (float angle = 0; angle <= LimiteAng; angle++) {
+            float radian = angle * (PI / 180); // para pasar a radianes
+            
+            float x = centerX + radioX * cos(radian); // coordenada x
+            float y = centerY + radioY * sin(radian); // coordenada y
+
+            glVertex2f(x, y);
+        }
+        
+        glVertex2f(centerX + radioX * cos(0), centerY + radioY * sin(0)); // cierra la elipse
+        glEnd();
+    } else {
+//        printf("Los radios deben ser mayores a 0.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
 // Función de inicialización
 void init() {
     glClearColor(1.0, 1.0, 1.0, 1.0); // Fondo blanco
@@ -159,6 +190,9 @@ void EcuacionG(int size, float x1, float y1, float x2, float y2) {
 void dibujar_usosmultiples(){
    glClear(GL_COLOR_BUFFER_BIT);
    
+   
+   Elipse(150, 50, 300, 230, 360);
+   
     //PAREDES
     glColor3f(0.0, 0.0, 0.0); // Se dibuja el poligono
     drawPolygon(verticesPared, numVertices);
@@ -184,6 +218,12 @@ void dibujar_usosmultiples(){
 
     glColor3f(0.77, 0.34, 0.26); 
     scanLineFill(verticesCentro, numVertices2);
+    
+    glColor3f(0.77, 0.34, 0.26); 
+    drawPolygon(verticesEntrada, numVertices);
+
+    glColor3f(0.74, 0.65, 0.52); 
+    scanLineFill(verticesEntrada, numVertices);
     
     //VENTANAL 1
     glColor3f(0.31, 0.20, 0.16); 
@@ -460,6 +500,87 @@ void dibujar_usosmultiples(){
     
     glColor3f(0.31, 0.20, 0.16);
     EcuacionG(12, 221, 300, 221, 335);
+    
+//  VENTANAS CENTRO 1
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 285, 435, 375, 435);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 375, 435, 375, 390);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 375, 390, 285, 390);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 285, 390, 285, 435);
+    
+//  BARROTES  
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 300, 435, 300, 390);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 320, 435, 320, 390);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 340, 435, 340, 390);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 360, 435, 360, 390);
+    
+//  VENTANAS CENTRO 2
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 285, 385, 375, 385);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 375, 385, 375, 330);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 375, 330, 285, 330);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 285, 330, 285, 385);
+    
+//  BARROTES  
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 300, 385, 300, 330);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 320, 385, 320, 330);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 340, 385, 340, 330);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 360, 385, 360, 330);
+    
+//  MARCO
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 285, 325, 375, 325);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 375, 325, 375, 280);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 375, 280, 285, 280);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 285, 280, 285, 325);
+    
+//  PUERTA  
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 320, 310, 340, 310);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 340, 310, 340, 280);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 340, 280, 320, 280);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 320, 280, 320, 310);
+    
+    glColor3f(0.0, 0.0, 0.0);
+    EcuacionG(3, 330, 310, 330, 280);
     
     
     
